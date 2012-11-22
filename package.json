@@ -1,0 +1,26 @@
+{
+  "name": "message-go",
+  "author": "Goddy Zhao <goddy128@gmail.com> (http://goddyzhao.me)",
+  "version": "0.0.1",
+  "description": "A tiny tool to automatically collect messages in source file and transfer them into message properties file(for SF projects)",
+  "main": "lib/message-go.js",
+  "dependencies": {
+    "commander": "*",
+    "step": "*",
+    "linestream": "*",
+    "cli-color": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {"mgo": "./bin/message-go"},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/goddyZhao/message-go.git"
+  },
+  "keywords": [
+    "node.js",
+    ""
+  ],
+  "license": "MIT"
+}
