@@ -4,7 +4,7 @@ var program = require('commander');
 var mgo = require('../');
 
 program
-  .version('0.0.1')
+  .version('1.0.0')
   .option('-f, --from [from]', 'Specify a single source file or directory including messages')
   .option('-t, --to [to]', 'Specify the message property file')
   .parse(process.argv);
