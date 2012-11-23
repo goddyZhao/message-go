@@ -1,0 +1,203 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Message-Go</title>
+  <meta name="description" content="A tiny tool to automatically collect messages in source file and transfer them into message properties file">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Message-Go</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">A tiny tool to automatically collect messages in source file and transfer them into message properties file</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/goddyZhao/message-go/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/goddyZhao/message-go/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/goddyZhao/message-go" class="code">View Message-Go on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h1>Message-Go</h1>
+
+<p>A tiny tool to automatically collect messages in source file and transfer them into message properties file</p>
+
+<h2>Why Message-Go</h2>
+
+<p>In SF's project, i18n is an important thing we should take care of as an engineer. Commonly, these static messages should be put in the <em>sfmessages-MODULE.properties.utf8</em>.</p>
+
+<p>Problems here!</p>
+
+<blockquote>
+<p>When you (as an UI developer) develop a new feature for some au module, you have to put the new messages in the <em>sfmessages-MODULE.properties.utf8</em> file which is located in V4.
+Then it is required to REBUILD v4 and REDEPLOY your module to get the new messages. As shown in the following chart, the process is really crappy:</p>
+</blockquote>
+
+<pre><code>  +---------------------+
+  | add/change messages |&lt;--------+
+  | in sfmessages-MO... |         |
+  +---------------------+         |
+            +                     |
+            |                     |
+            v                     |
+  +---------------------+         |
+  |     rebuild V4      |         |
+  +---------------------+         |
+            +                     |
+            |                     |
+            v                     |
+  +---------------------+         |
+  |  redeploy au module |         |
+  +---------------------+         |
+            +                     |
+            |                     |
+            v                     |
+  +---------------------+         |
+  |  Need more changes  |+--------+
+  +---------------------+
+</code></pre>
+
+<p>So, here comes Message-Go, Message-Go gives you a more efficient way to add new messages, as described in the following:</p>
+
+<ol>
+<li>
+<p>You just add messages in your source file(like new-feature.js) anyway(At the top of the source file is recommended), like</p>
+
+<p>MSGS.HOMEPAGE_ADMIN_LABEL_SHOW='show';
+MSGS.HOMEPAGE_ADMIN_LABEL_HIDE='hide';
+....</p>
+
+<p>// use the message in the same way as in production
+html.push(MSGS.HOMEPAGE_ADMIN_LABEL_SHOW);
+...</p>
+</li>
+<li><p>Message-Go will <em>COLLECT</em> all the messages in your source file(or directory) , put them into <em>sfmessages-MODULE.properties.utf8</em> automatically after your confirmed you don't wanna change them any more and run Message-Go.</p></li>
+</ol><p>The following chart shows the advantage to use Message-Go compared with the common way:</p>
+
+<pre><code>        OLD PROCESS                     WITH MESSAGE-GO
+      ---------------                  -----------------
+
+  +---------------------+          +------------------------+
+  | add/change messages |&lt;--+      | add/change messages in |&lt;--+
+  | in sfmessages-MO... |   |      | source file directly   |   |
+  +---------------------+   |      +------------------------+   |
+            +               |                  +                |
+            |               |                  |                |
+            v               |                  v                |
+  +---------------------+   |      +------------------------+   |
+  |     rebuild V4      |   |      |        deploy-js       |   |
+  +---------------------+   |      +------------------------+   |
+            +               |                  +                |
+            |               |                  |                |
+            v               |                  v                |
+  +---------------------+   |      +------------------------+   |
+  |  redeploy au module |   |      |    Need more changs    |+--+
+  +---------------------+   |      +------------------------+
+            +               |                  
+            |               |                  
+            v               |                  
+  +---------------------+   |      
+  |  Need more changes  |+--+
+  +---------------------+
+</code></pre>
+
+<blockquote>
+<p>As you see, with Message-Go, you don't need to rebuild and redeploy anymore, it will make better powerful if it is used with <a href="http://goddyzhao.me/nproxy">NProxy</a> and you can say GOODBYE to build system as a UI developer. </p>
+</blockquote>
+
+<p>The following chart shows the great powerful from <a href="http://goddyzhao.me/nproxy">NProxy</a> and Message-Go:</p>
+
+<pre><code>     WITH MESSAGE-GO                  WITH MESSAGE-GO AND NPROXY
+    -----------------                ----------------------------
+
+  +------------------------+          +------------------------+
+  | add/change messages in |&lt;--+      | add/change messages in |&lt;--+
+  | source file directly   |   |      | source file directly   |   |
+  +------------------------+   |      +------------------------+   |
+            +                  |                  +                |
+            |                  |                  |                |
+            v                  |                  v                |
+  +------------------------+   |      +------------------------+   |
+  |      deploy-js         |   |      |    Need more changs    |+--|
+  +------------------------+   |      +------------------------+   
+            +                  |       
+            |                  |       
+            v                  |       
+  +------------------------+   |     
+  |  Need more changs      |+--|   
+  +------------------------+       
+</code></pre>
+
+<h2>Installation</h2>
+
+<pre><code>npm i -g message-go
+</code></pre>
+
+<h2>Update</h2>
+
+<pre><code>npm update -g message-go
+</code></pre>
+
+<h2>Usage</h2>
+
+<pre><code>mgo -f /Users/goddyzhao/project/js -t /Users/goddyzhao/project/sfmessage.properties
+</code></pre>
+
+<p>Note: -f(from) can be a js file or directory(Message-Go will treat only js file now)
+      -t(to) should be a file but not directory</p>
+
+<p><strong>More Options</strong>
+    Usage: mgo [options]</p>
+
+<pre><code>Options:
+
+-h, --help         output usage information
+-V, --version      output the version number
+-f, --from [from]  Specify a single source file or directory including messages
+-t, --to [to]      Specify the message property file
+</code></pre>
+
+<h2>License</h2>
+
+<p>Message-Go is available under the terms of the MIT License</p>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/goddyZhao" class="avatar"><img src="https://secure.gravatar.com/avatar/34770008557dc61d106dc01a2d70581e?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png" width="48" height="48"/></a> <a href="https://github.com/goddyZhao">goddyZhao</a> maintains <a href="https://github.com/goddyZhao/message-go">Message-Go</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/goddyZhao/message-go/tarball/master" class="tar">tar</a><a href="https://github.com/goddyZhao/message-go/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+  
+</body>
+</html>
